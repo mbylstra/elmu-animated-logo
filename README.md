@@ -1,1 +1,1 @@
-http://mbylstra.github.io/elmu-animated-logo/
+Demo: http://mbylstra.github.io/elmu-animated-logo/

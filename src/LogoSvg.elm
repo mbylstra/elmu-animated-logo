@@ -1,10 +1,10 @@
-module LogoSvg where
+module LogoSvg exposing (..)
 
-import Svg exposing (clipPath, svg, node, clipPath, text, Svg, defs, circle)
-import Svg.Attributes exposing (width, viewBox, id, height, cx, cy, r, fill, stroke)
+import Svg exposing (Svg, clipPath, svg, node, clipPath, text, defs, circle)
+import Svg.Attributes exposing (width, height, id, cx, cy, fill)
 import Html.Attributes exposing (attribute)
 
-logo : Svg
+logo : Svg msg
 logo =
   svg
     [ id "logo"
