@@ -1,26 +1,25 @@
-import Graphics.Collage as Collage exposing (collage, circle, outlined, defaultLine)
-import Html exposing (Html, fromElement, div, node, text)
+import Collage exposing (collage, circle, outlined, defaultLine)
+import Html exposing (Html, div, node, text)
 import Html.Attributes exposing (class)
-import Time
-
-
-import Effects exposing (Never)
-import StartApp
+import Html.App as App
+import Element exposing (toHtml)
+import AnimationFrame
 
 import LogoSvg exposing (logo)
 
 type Model = Int
-init = (0, Effects.none)
 
-type Action
-  = ClockTick
+init = (0, Cmd.none)
 
-clockTickSignal = Signal.map (\_ -> ClockTick) (Time.fps 60)
+type Msg = Tick Float
 
-update action model =
-  case action of
-    ClockTick ->
-      ((model + 1) % 300, Effects.none)
+update msg model =
+  case msg of
+    Tick diff ->
+      ((model + (round (diff / 16))) % 300, Cmd.none)
+
+subscriptions model =
+  AnimationFrame.diffs Tick
 
 styleString = """
   @import url(https://fonts.googleapis.com/css?family=Rubik:500,400,300,700);
@@ -37,9 +36,9 @@ styleString = """
 
 canvas width =
   collage 600 200 (circles (toFloat width))
-  |> fromElement
+  |> toHtml
 
-view address model =
+view model =
   div []
     [ node "style" [] [ text styleString ]
     , logo
@@ -58,13 +57,10 @@ defaultCircle radius =
   circle radius
       |> outlined { defaultLine | width = 1 }
 
-app =
-  StartApp.start
+main =
+  App.program
     { init = init
     , update = update
     , view = view
-    , inputs = [clockTickSignal]
+    , subscriptions = subscriptions
     }
-
-main =
-  app.html
